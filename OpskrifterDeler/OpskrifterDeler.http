@@ -1,0 +1,6 @@
+@OpskrifterDeler_HostAddress = http://localhost:5217
+
+GET {{OpskrifterDeler_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
