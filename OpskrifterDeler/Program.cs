@@ -1,4 +1,12 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using OpskrifterDeler.Data;
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("OpskrifterDelerContextConnection") ?? throw new InvalidOperationException("Connection string 'OpskrifterDelerContextConnection' not found.");
+
+builder.Services.AddDbContext<OpskrifterDelerContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<OpskrifterDelerContext>();
 
 // Add services to the container.
 
