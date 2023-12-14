@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace OpskrifterDeler.Repositories
 {
-    public class BaseEntityRepository<T> : IEntityRepository<T> where T : class, IEntity, new()
+    public abstract class BaseEntityRepository<T> : IEntityRepository<T> where T : class, IEntity, new()
     {
         protected readonly DBDataContext _context;
 
@@ -104,10 +104,7 @@ namespace OpskrifterDeler.Repositories
                 throw;
             }
         }
-        public /*abstract*/ Task<IEnumerable<T>> GetAllWithIncludeAsync(Expression<Func<T, bool>> expression = null)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Task<IEnumerable<T>> GetAllWithIncludeAsync(Expression<Func<T, bool>> expression = null);
 
         public async Task<T> GetSingleAsync(Expression<Func<T, bool>> expression)
         {
@@ -120,10 +117,8 @@ namespace OpskrifterDeler.Repositories
                 throw;
             }
         }
-        public /* abstract */ Task<T> GetSingleWithIncludeAsync(Expression<Func<T, bool>> expression)
-        {
-           throw new NotImplementedException();
-        }
+
+        public abstract Task<T> GetSingleWithIncludeAsync(Expression<Func<T, bool>> expression);
 
         public async Task<T> DeleteAsync(Expression<Func<T, bool>> expression)
         {
