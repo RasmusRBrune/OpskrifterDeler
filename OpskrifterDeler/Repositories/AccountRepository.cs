@@ -12,6 +12,16 @@ namespace OpskrifterDeler.Repositories
         public AccountRepository(DBDataContext context) : base(context)
         {
         }
+
+        public override Task<IEnumerable<Account>> GetAllWithIncludeAsync(Expression<Func<Account, bool>> expression = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<Account> GetSingleWithIncludeAsync(Expression<Func<Account, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
         //public override Task<IEnumerable<Account>> GetAllWithIncludeAsync(Expression<Func<Account, bool>> expression = null)
         //{
         //    throw new NotImplementedException();
