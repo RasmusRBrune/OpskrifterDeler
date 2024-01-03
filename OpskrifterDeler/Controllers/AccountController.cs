@@ -10,30 +10,24 @@ namespace OpskrifterDeler.Controllers
     [ApiController]
     public class AccountController : BaseEntityController<Account,Guid>
     {
-
-        private readonly SignInManager<IdentityUser> _signInManager;
-
-        public AccountController(IAccountService service, IPushNotificationService notificationService, SignInManager<IdentityUser> signInManager) : base(service, notificationService)
+        private readonly IAccountService _accountService;
+        public AccountController(IAccountService service,IAccountService accountService) : base(service)
         {
-            _signInManager = signInManager;
+            _accountService = accountService;
         }
 
-        [HttpPost("/login")]
-        public async Task<IActionResult> Login(string Email,string Password)
+        [HttpPost]
+        public async Task<IActionResult> Register(Guid UserId)
         {
             try
             {
-                var result = await _signInManager.PasswordSignInAsync(Email,Password,false, lockoutOnFailure: false);
-                if (result is null)
-                {
-                    return BadRequest("error need to be a valid email or password need to have 8 long, 1 number and one uppercase");
-                }
+                var result = await _accountService.AddAsync(new Account());
                 return Ok(result);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
-                return Problem(e.Message);
+                throw;
             }
         }
     }

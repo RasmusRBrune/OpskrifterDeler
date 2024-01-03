@@ -7,13 +7,11 @@ namespace OpskrifterDeler.Controllers
         where T : class, IEntity<IdType>, new()
     {
         protected readonly IEntityService<T, IdType> _service;
-        protected readonly IPushNotificationService _notificationService;
 
 
-        public BaseEntityController(IEntityService<T, IdType> service, IPushNotificationService notificationService)
+        public BaseEntityController(IEntityService<T, IdType> service)
         {
             _service = service;
-            _notificationService = notificationService;
         }
 
         [HttpDelete("{id}")]
@@ -26,7 +24,6 @@ namespace OpskrifterDeler.Controllers
                 {
                     return NotFound();
                 }
-                await _notificationService.NotifyClients(result, EntityAction.Delete);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -45,7 +42,6 @@ namespace OpskrifterDeler.Controllers
                 {
                     return Problem("Something went wrong. Contact an Admin / Server representative");
                 }
-                await _notificationService.NotifyClients(result, EntityAction.Create);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -64,7 +60,6 @@ namespace OpskrifterDeler.Controllers
                 {
                     return NotFound();
                 }
-                await _notificationService.NotifyClients(result, EntityAction.Update);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -87,7 +82,6 @@ namespace OpskrifterDeler.Controllers
                 {
                     return NoContent();
                 }
-                await _notificationService.NotifyClients(result, EntityAction.Update);
                 return Ok(result);
             }
             catch (Exception ex)
