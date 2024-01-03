@@ -1,0 +1,43 @@
+﻿@page "/RandomDishes"
+@using Microsoft.AspNetCore.Components
+@using System.Text.Json
+@using System.Text.Json.Serialization
+
+<PageTitle>Random Dishes</PageTitle>
+
+<MudText Typo="Typo.h3">Random Dishes</MudText>
+@foreach(Meal m in MealList)
+{
+    <MudImage Src="@m.MealThumb"/>
+    <MudText>@m.Name @m.MealId</MudText>
+}
+
+@code {
+    private List<Meal> MealList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MealList =  new List<Meal>() { new Meal { MealId = "NaN", Name = "NaN", MealThumb = "" } };
+
+        HttpClient client = new HttpClient();
+        var result = await client.GetFromJsonAsync<Content>("https://www.themealdb.com/api/json/v1/1/random.php");
+        if(result != null)
+            MealList = result.Meals;
+    }
+
+    public class Content
+    {
+        [JsonPropertyName("meals")]
+        public List<Meal> Meals { get; set; }
+    }
+
+    public class Meal
+    {
+        [JsonPropertyName("idMeal")]
+        public string MealId { get; set; }
+        [JsonPropertyName("strMeal")]
+        public string Name { get; set; }        
+        [JsonPropertyName("strMealThumb")]
+        public string MealThumb { get; set; }
+    }
+}

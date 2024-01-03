@@ -1,21 +1,31 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider IsDarkMode/> <!-- Hardcoded Darkmode, thank me later -->
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
     <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => NavDrawerToggle())" />
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
+         @if(!_loggedIn){
+            <MudIconButton Icon="@Icons.Material.Filled.Login" Color="Color.Inherit" Title="Login" OnClick="@((e) => LoginToggle())" />
+         }else{
+            <MudIconButton Icon="@Icons.Material.Filled.Person" Color="Color.Inherit" Title="Account" OnClick="@((e) => AccDrawerToggle())" />
+            <MudIconButton Icon="@Icons.Material.Filled.Star" Color="Color.Inherit" Title="Favorites" Href="FavoriteDishes" Match="NavLinkMatch.Prefix"/>
+         }
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
+     <MudDrawer @bind-Open="_navdrawerOpen" Elevation="1">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h6">DishDaxBlazor</MudText>
+            <MudText Typo="Typo.h6">DishDexBlazor</MudText>
         </MudDrawerHeader>
         <NavMenu />
+    </MudDrawer>
+    <MudDrawer Variant="DrawerVariant.Temporary" Anchor="Anchor.End" @bind-Open="_accrawerOpen" Elevation="1">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">Username</MudText>
+        </MudDrawerHeader>
+        <AccMenu />
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
@@ -25,10 +35,20 @@
 </MudLayout>
 
 @code {
-    bool _drawerOpen = true;
+    bool _navdrawerOpen = true;
+    bool _accrawerOpen = false;
+    bool _loggedIn = false;
 
-    void DrawerToggle()
+    void NavDrawerToggle()
     {
-        _drawerOpen = !_drawerOpen;
+        _navdrawerOpen = !_navdrawerOpen;
+    }
+    void AccDrawerToggle()
+    {
+        _accrawerOpen = !_accrawerOpen;
+    }
+    void LoginToggle()
+    {
+        _loggedIn = !_loggedIn;
     }
 }

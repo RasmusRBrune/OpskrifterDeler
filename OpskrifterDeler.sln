@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpskrifterDeler", "OpskrifterDeler\OpskrifterDeler.csproj", "{22120FDA-C66D-49AD-8459-6B06C4BACE5B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DishDaxBlazor", "DishDexBlazor\DishDaxBlazor.csproj", "{6D9D7178-3F7B-41FB-9C40-318C37378D82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DishDexBlazor", "DishDexBlazor\DishDexBlazor.csproj", "{6D9D7178-3F7B-41FB-9C40-318C37378D82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
