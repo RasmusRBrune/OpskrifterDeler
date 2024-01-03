@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpskrifterDeler.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("OpskrifterDelerContextConnection") ?? throw new InvalidOperationException("Connection string 'OpskrifterDelerContextConnection' not found.");
 

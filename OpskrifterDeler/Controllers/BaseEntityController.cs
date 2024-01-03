@@ -9,6 +9,7 @@ namespace OpskrifterDeler.Controllers
         protected readonly IEntityService<T, IdType> _service;
         protected readonly IPushNotificationService _notificationService;
 
+
         public BaseEntityController(IEntityService<T, IdType> service, IPushNotificationService notificationService)
         {
             _service = service;

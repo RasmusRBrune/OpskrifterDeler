@@ -2,7 +2,7 @@
 
 namespace OpskrifterDeler.Interfaces
 {
-    public interface IAccountRepository : IEntityRepository<Account>
+    public interface IAccountService : IEntityService<Account,Guid>
     {
     }
 }

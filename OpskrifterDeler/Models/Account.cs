@@ -1,6 +1,6 @@
 ﻿namespace OpskrifterDeler.Models
 {
-    public class Account : BaseEntity<int>
+    public class Account : BaseEntity<Guid>
     {
     }
 }
