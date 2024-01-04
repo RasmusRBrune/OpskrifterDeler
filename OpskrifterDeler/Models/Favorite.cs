@@ -2,8 +2,10 @@
 {
     public class Favorite : BaseEntity<Guid>
     {
-        public Guid AccounId { get; set; }
+        public Guid AccountId { get; set; }
         
         public int MealId { get; set; }
+
+        public Account Account { get; set; }
     }
 }

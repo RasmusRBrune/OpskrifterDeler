@@ -7,5 +7,7 @@
         public int StarValue { get; set; }
 
         public int MealId { get; set; }
+
+        public Account Account { get; set; }
     }
 }
