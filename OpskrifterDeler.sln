@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpskrifterDeler", "Opskrift
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DishDexBlazor", "DishDexBlazor\DishDexBlazor.csproj", "{6D9D7178-3F7B-41FB-9C40-318C37378D82}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DishDexServer", "DishDexServer\DishDexServer.csproj", "{EDBCDF81-7AB9-4A1E-8338-4873157BC8F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6D9D7178-3F7B-41FB-9C40-318C37378D82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D9D7178-3F7B-41FB-9C40-318C37378D82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D9D7178-3F7B-41FB-9C40-318C37378D82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDBCDF81-7AB9-4A1E-8338-4873157BC8F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDBCDF81-7AB9-4A1E-8338-4873157BC8F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDBCDF81-7AB9-4A1E-8338-4873157BC8F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDBCDF81-7AB9-4A1E-8338-4873157BC8F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
