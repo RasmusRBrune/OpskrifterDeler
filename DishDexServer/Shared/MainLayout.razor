@@ -1,6 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@using System.Security.Claims
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <MudThemeProvider IsDarkMode/> <!-- Hardcoded Darkmode, thank me later -->
 <MudDialogProvider />
@@ -10,14 +8,7 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => NavDrawerToggle())" />
         <MudSpacer />
-
-         @if (string.IsNullOrEmpty(identity))
-        {
-            <LoginDisplay></LoginDisplay>
-         }else{
-            <MudIconButton Icon="@Icons.Material.Filled.Person" Color="Color.Inherit" Title="Account" OnClick="@((e) => AccDrawerToggle())" />
-            <MudIconButton Icon="@Icons.Material.Filled.Star" Color="Color.Inherit" Title="Favorites" Href="FavoriteDishes" Match="NavLinkMatch.Prefix"/>
-         }
+        <LoginDisplay/>
     </MudAppBar>
      <MudDrawer @bind-Open="_navdrawerOpen" Elevation="1">
         <MudDrawerHeader>
@@ -25,12 +16,7 @@
         </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>
-    <MudDrawer Variant="DrawerVariant.Temporary" Anchor="Anchor.End" @bind-Open="_accrawerOpen" Elevation="1">
-        <MudDrawerHeader>
-            <MudText Typo="Typo.h6">Username</MudText>
-        </MudDrawerHeader>
-        <AccMenu />
-    </MudDrawer>
+    
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
             @Body
@@ -39,26 +25,12 @@
 </MudLayout>
 
 @code {
-    bool _navdrawerOpen = true;
-    bool _accrawerOpen = false;
+    bool _navdrawerOpen = false;
+   
     bool _loggedIn = false;
-    private string? identity;
 
     void NavDrawerToggle()
     {
         _navdrawerOpen = !_navdrawerOpen;
-    }
-    void AccDrawerToggle()
-    {
-        _accrawerOpen = !_accrawerOpen;
-    }
-    async Task LoginToggle()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        if (user.Identity is not null && user.Identity.IsAuthenticated)
-        {
-            identity = user.FindFirstValue(ClaimTypes.NameIdentifier);
-        }
     }
 }
