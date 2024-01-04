@@ -3,14 +3,15 @@ using OpskrifterDeler.DBContext;
 using OpskrifterDeler.Interfaces;
 using System.Linq.Expressions;
 using System.Linq;
+using OpskrifterDeler.Data;
 
 namespace OpskrifterDeler.Repositories
 {
     public abstract class BaseEntityRepository<T> : IEntityRepository<T> where T : class, IEntity, new()
     {
-        protected readonly DBDataContext _context;
+        protected readonly OpskrifterDelerContext _context;
 
-        public BaseEntityRepository(DBDataContext context)
+        public BaseEntityRepository(OpskrifterDelerContext context)
         {
             _context = context;
         }

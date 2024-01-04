@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpskrifterDeler.Data;
+using OpskrifterDeler.DBContext;
 using OpskrifterDeler.Interfaces;
 using OpskrifterDeler.Repositories;
 using OpskrifterDeler.Services;
@@ -8,12 +9,14 @@ using OpskrifterDeler.Services;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("OpskrifterDelerContextConnection") ?? throw new InvalidOperationException("Connection string 'OpskrifterDelerContextConnection' not found.");
 
-builder.Services.AddDbContext<OpskrifterDelerContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
+//builder.Services.AddDbContext<OpskrifterDelerContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
+builder.Services.AddDbContext<OpskrifterDelerContext>(options =>
+			   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<OpskrifterDelerContext>();
 
 // Add services to the container.
-builder.Services.AddTransient(typeof(IAccountRepository), typeof(AccountRepository));
+builder.Services.AddScoped(typeof(IAccountRepository), typeof(AccountRepository));
 builder.Services.AddTransient(typeof(IAccountService), typeof(AccountService));
 
 

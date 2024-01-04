@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OpskrifterDeler.Models;
 
 namespace OpskrifterDeler.Data;
 
@@ -10,12 +11,45 @@ public class OpskrifterDelerContext : IdentityDbContext<IdentityUser>
         : base(options)
     {
     }
+    public virtual DbSet<Account> Accounts { get; set; }
+    public virtual DbSet<Favorite> Favorites { get; set; }
+    public virtual DbSet<Review> Reviews { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(builder);
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Account>().ToTable("Accounts");
+        modelBuilder.Entity<Account>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
+
+            entity.Property(e => e.AccountId).IsRequired();
+        });
+
+        modelBuilder.Entity<Favorite>().ToTable("Favorites");
+        modelBuilder.Entity<Favorite>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
+
+            entity.Property(e => e.MealId).IsRequired();
+
+            entity.HasOne(e => e.Account).WithMany(e => e.Favorite).HasForeignKey(e => e.AccountId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Review>().ToTable("Reviews");
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
+
+            entity.Property(e => e.StarValue).HasMaxLength(5).IsRequired();
+
+            entity.Property(e => e.MealId).IsRequired();
+
+            entity.HasOne(e => e.Account).WithMany(e => e.Reviews).HasForeignKey(e => e.AccountId);
+        });
     }
 }

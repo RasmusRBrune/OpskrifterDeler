@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OpskrifterDeler.Data;
 using OpskrifterDeler.DBContext;
 using OpskrifterDeler.Interfaces;
 using OpskrifterDeler.Models;
@@ -9,7 +10,7 @@ namespace OpskrifterDeler.Repositories
 {
     public class AccountRepository : BaseEntityRepository<Account>, IAccountRepository
     {
-        public AccountRepository(DBDataContext context) : base(context)
+        public AccountRepository(OpskrifterDelerContext context) : base(context)
         {
         }
         public override Task<IEnumerable<Account>> GetAllWithIncludeAsync(Expression<Func<Account, bool>> expression)
