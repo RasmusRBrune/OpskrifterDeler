@@ -11,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("OpskrifterDele
 
 //builder.Services.AddDbContext<OpskrifterDelerContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
 builder.Services.AddDbContext<OpskrifterDelerContext>(options =>
-			   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+			   options.UseSqlServer(builder.Configuration.GetConnectionString("OpskrifterDelerContextConnection")));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<OpskrifterDelerContext>();
 
