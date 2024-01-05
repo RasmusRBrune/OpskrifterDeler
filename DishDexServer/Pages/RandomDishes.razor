@@ -6,23 +6,35 @@
 <PageTitle>Random Dishes</PageTitle>
 
 <MudText Typo="Typo.h3">Random Dishes</MudText>
-@foreach(Meal m in MealList)
-{
-    <MudImage Src="@m.MealThumb"/>
-    <MudText>@m.Name @m.MealId</MudText>
-}
+
+<MudPaper Height="400px" Width="100%">
+    <MudContainer Fixed="true">
+        <MudPaper Height="400px" Width="100%" Square="true" Class="mud-theme-primary">
+            @foreach (Meal m in MealList)
+            {
+                <MudImage Src="@m.MealThumb" />
+                <MudText>@m.Name @m.MealId</MudText>
+            }
+        </MudPaper>
+    </MudContainer>
+</MudPaper>
+
+
 
 @code {
     private List<Meal> MealList { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        MealList =  new List<Meal>() { new Meal { MealId = "NaN", Name = "NaN", MealThumb = "" } };
+        MealList = new List<Meal>();
 
         HttpClient client = new HttpClient();
-        var result = await client.GetFromJsonAsync<Content>("https://www.themealdb.com/api/json/v1/1/random.php");
-        if(result != null)
-            MealList = result.Meals;
+        for (int i = 0; i < 10; i++)
+        {
+            var result = await client.GetFromJsonAsync<Content>("https://www.themealdb.com/api/json/v1/1/random.php");
+            if (result != null)
+                MealList.Add(result.Meals.FirstOrDefault());
+        }
     }
 
     public class Content
