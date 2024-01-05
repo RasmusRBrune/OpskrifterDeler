@@ -5,6 +5,7 @@ using OpskrifterDeler.DBContext;
 using OpskrifterDeler.Interfaces;
 using OpskrifterDeler.Repositories;
 using OpskrifterDeler.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("OpskrifterDelerContextConnection") ?? throw new InvalidOperationException("Connection string 'OpskrifterDelerContextConnection' not found.");
@@ -24,7 +25,10 @@ builder.Services.AddTransient(typeof(IFavoriteService), typeof(FavoriteService))
 //builder.Services.AddTransient(typeof(IReviewService), typeof(ReviewService));
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

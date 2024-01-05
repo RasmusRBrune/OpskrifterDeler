@@ -33,18 +33,24 @@
             MealList = result.Meals.FirstOrDefault();
     }
 
+    public JsonSerializerOptions SerializerOptions { get; set; } = new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
+
     async Task AddToFavorite()
     {
         Favorite obj = new()
         {
-                Id = Guid.Empty,
-                AccountId = Guid.NewGuid(),
+                AccountId = Guid.Parse(identity),
                 MealId = Convert.ToInt32(MealList.MealId)
         };
-        var load = JsonSerializer.Serialize(obj);
+        var load = JsonSerializer.Serialize(obj, SerializerOptions);
         HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
-        var result = await client.PostAsync("https://localhost:44384/api/Favorite", content);
+        var result = await client.PostAsync("https://localhost:44384/api/Favorite", content).ConfigureAwait(false);
     }
+
     public class Content
     {
         [JsonPropertyName("meals")]
