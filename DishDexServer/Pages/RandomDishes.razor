@@ -5,16 +5,24 @@
 
 <PageTitle>Random Dishes</PageTitle>
 
-<MudText Typo="Typo.h3">Random Dishes</MudText>
+<MudText Typo="Typo.h3" GutterBottom>Random Dishes</MudText>
 
 <MudPaper Height="400px" Width="100%">
     <MudContainer Fixed="true">
-        <MudPaper Height="400px" Width="100%" Square="true" Class="mud-theme-primary">
-            @foreach (Meal m in MealList)
-            {
-                <MudImage Src="@m.MealThumb" />
-                <MudText>@m.Name @m.MealId</MudText>
-            }
+        <MudPaper Width="100%" Square="true">
+            <MudGrid>
+                @foreach (Meal m in MealList)
+                {
+                    <MudItem xs="3">
+                        <MudPaper Class="mud-theme-primary p-2 d-flex align-center justify-center mud-width-full">
+                            <MudImage Src="@m.MealThumb" Width="250"/>
+                            </MudPaper>
+                        <MudPaper Class="mud-theme-primary p-2 d-flex align-center justify-center mud-width-full">
+                            <MudText Typo="Typo.body2">@m.Name</MudText>
+                        </MudPaper>
+                    </MudItem>
+                }
+            </MudGrid>
         </MudPaper>
     </MudContainer>
 </MudPaper>
@@ -29,11 +37,17 @@
         MealList = new List<Meal>();
 
         HttpClient client = new HttpClient();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 10;)
         {
             var result = await client.GetFromJsonAsync<Content>("https://www.themealdb.com/api/json/v1/1/random.php");
             if (result != null)
-                MealList.Add(result.Meals.FirstOrDefault());
+            {
+                if (MealList.Contains(result.Meals.FirstOrDefault()))
+                {
+                    MealList.Add(result.Meals.FirstOrDefault());
+                    i++;
+                }
+            }
         }
     }
 
