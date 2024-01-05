@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @using System.Security.Claims
 @inject AuthenticationStateProvider authenticationStateProvide
+@inject IJSRuntime JS
 
 <MudThemeProvider IsDarkMode/> <!-- Hardcoded Darkmode, thank me later -->
 <MudDialogProvider />
@@ -28,7 +29,7 @@
 
 @code {
     bool _navdrawerOpen = false;
-   
+
     bool _loggedIn = false;
     private string? identity;
 
@@ -40,6 +41,7 @@
         {
             identity = user.FindFirstValue(ClaimTypes.NameIdentifier);
         }
+
     }
 
     async void NavDrawerToggle()
@@ -53,6 +55,8 @@
             {
                 identity = user.FindFirstValue(ClaimTypes.NameIdentifier);
             }
+
+            await JS.InvokeVoidAsync("console.log", identity);
         }
     }
 }
