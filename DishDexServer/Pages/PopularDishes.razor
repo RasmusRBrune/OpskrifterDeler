@@ -1,9 +1,60 @@
 ﻿@page "/PopularDishes"
+@using Microsoft.AspNetCore.Components
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using System.Text
+@using OpskrifterDeler.Models
+@inject HttpClient client
 
 <PageTitle>Popular Dishes</PageTitle>
 
-<MudText Typo="Typo.h3">Popular Dishes</MudText>
+<MudText Typo="Typo.h3">Popular Dishes </MudText>
+<MudPaper Height="400px" Width="100%">
+    <MudContainer Fixed="true">
+        <MudPaper Height="400px" Width="100%" Square="true" Class="mud-theme-primary">
+            <MudImage Src="@MealList.MealThumb" />
+            <MudText>@MealList.Name @MealList.MealId</MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.Add" Title="Add to favorite" OnClick="@((e) => AddToFavorite())" />
+        </MudPaper>
+    </MudContainer>
+</MudPaper>
 
 @code {
+    private Meal MealList { get; set; }
 
+    [CascadingParameter] string identity { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MealList = new Meal();
+
+        var result = await client.GetFromJsonAsync<Content>("https://www.themealdb.com/api/json/v1/1/random.php");
+        if (result != null)
+            MealList = result.Meals.FirstOrDefault();
+    }
+
+    async Task AddToFavorite()
+    {
+        Favorite content = new()
+        {
+                AccountId = Guid.Parse(identity),
+                MealId = Convert.ToInt32(MealList.MealId)
+        };
+        var result = await client.PostAsJsonAsync("https://localhost:44384/api/Favorite", content);
+    }
+    public class Content
+    {
+        [JsonPropertyName("meals")]
+        public List<Meal> Meals { get; set; }
+    }
+
+    public class Meal
+    {
+        [JsonPropertyName("idMeal")]
+        public string MealId { get; set; }
+        [JsonPropertyName("strMeal")]
+        public string Name { get; set; }
+        [JsonPropertyName("strMealThumb")]
+        public string MealThumb { get; set; }
+    }
 }
