@@ -18,6 +18,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 // Add services to the container.
 builder.Services.AddScoped(typeof(IAccountRepository), typeof(AccountRepository));
 builder.Services.AddTransient(typeof(IAccountService), typeof(AccountService));
+builder.Services.AddScoped(typeof(IFavoriteRepository), typeof(FavoriteRepository));
+builder.Services.AddTransient(typeof(IFavoriteService), typeof(FavoriteService));
+//builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
+//builder.Services.AddTransient(typeof(IReviewService), typeof(ReviewService));
 
 
 builder.Services.AddControllers();

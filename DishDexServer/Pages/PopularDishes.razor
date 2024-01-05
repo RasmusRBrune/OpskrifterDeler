@@ -35,12 +35,15 @@
 
     async Task AddToFavorite()
     {
-        Favorite content = new()
+        Favorite obj = new()
         {
-                AccountId = Guid.Parse(identity),
+                Id = Guid.Empty,
+                AccountId = Guid.NewGuid(),
                 MealId = Convert.ToInt32(MealList.MealId)
         };
-        var result = await client.PostAsJsonAsync("https://localhost:44384/api/Favorite", content);
+        var load = JsonSerializer.Serialize(obj);
+        HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
+        var result = await client.PostAsync("https://localhost:44384/api/Favorite", content);
     }
     public class Content
     {
