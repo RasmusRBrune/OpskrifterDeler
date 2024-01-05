@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @using System.Text.Json.Serialization
+@inject HttpClient client
 
 <PageTitle>Random Dishes</PageTitle>
 
@@ -36,17 +37,12 @@
     {
         MealList = new List<Meal>();
 
-        HttpClient client = new HttpClient();
-        for (int i = 0; i < 10;)
+        for (int i = 0; i < 10; i++)
         {
             var result = await client.GetFromJsonAsync<Content>("https://www.themealdb.com/api/json/v1/1/random.php");
             if (result != null)
             {
-                if (MealList.Contains(result.Meals.FirstOrDefault()))
-                {
-                    MealList.Add(result.Meals.FirstOrDefault());
-                    i++;
-                }
+                MealList.Add(result.Meals.FirstOrDefault());
             }
         }
     }
