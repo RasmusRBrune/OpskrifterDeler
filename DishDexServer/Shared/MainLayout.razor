@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@using System.Security.Claims
+@inject AuthenticationStateProvider authenticationStateProvide
 
 <MudThemeProvider IsDarkMode/> <!-- Hardcoded Darkmode, thank me later -->
 <MudDialogProvider />
@@ -28,9 +30,29 @@
     bool _navdrawerOpen = false;
    
     bool _loggedIn = false;
+    private string? identity;
 
-    void NavDrawerToggle()
+    protected async override Task OnInitializedAsync()
+    {
+        var authState = await authenticationStateProvide.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            identity = user.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+    }
+
+    async void NavDrawerToggle()
     {
         _navdrawerOpen = !_navdrawerOpen;
+        if (string.IsNullOrEmpty(identity))
+        {
+            var authState = await authenticationStateProvide.GetAuthenticationStateAsync();
+            var user = authState.User;
+            if (user.Identity is not null && user.Identity.IsAuthenticated)
+            {
+                identity = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
+        }
     }
 }

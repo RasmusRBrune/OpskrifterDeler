@@ -14,12 +14,13 @@
         </MudDrawer>
     </Authorized>
     <NotAuthorized>
-        <a href="Identity/Account/Register">Register</a>
+        <a style="margin-right:10px" href="Identity/Account/Register">Register</a>
         <a href="Identity/Account/Login">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
 @code{
     bool _accrawerOpen = false;
+
     void AccDrawerToggle()
     {
         _accrawerOpen = !_accrawerOpen;
