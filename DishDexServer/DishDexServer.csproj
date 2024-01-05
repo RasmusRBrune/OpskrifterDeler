@@ -37,4 +37,8 @@
     <_ContentIncludedByDefault Remove="Shared\AccMenu.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OpskrifterDeler\OpskrifterDeler.csproj" />
+  </ItemGroup>
+
 </Project>
