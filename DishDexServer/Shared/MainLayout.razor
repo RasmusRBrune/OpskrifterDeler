@@ -10,6 +10,7 @@
 <MudLayout>
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => NavDrawerToggle())" />
+        <MudText> @identity</MudText>
         <MudSpacer />
         <LoginDisplay/>
     </MudAppBar>
@@ -31,7 +32,7 @@
     bool _navdrawerOpen = false;
 
     bool _loggedIn = false;
-    private string? identity;
+    private string? identity = "hell nah";
 
     protected async override Task OnInitializedAsync()
     {
@@ -47,16 +48,5 @@
     async void NavDrawerToggle()
     {
         _navdrawerOpen = !_navdrawerOpen;
-        if (string.IsNullOrEmpty(identity))
-        {
-            var authState = await authenticationStateProvide.GetAuthenticationStateAsync();
-            var user = authState.User;
-            if (user.Identity is not null && user.Identity.IsAuthenticated)
-            {
-                identity = user.FindFirstValue(ClaimTypes.NameIdentifier);
-            }
-
-            await JS.InvokeVoidAsync("console.log", identity);
-        }
     }
 }
