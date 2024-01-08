@@ -6,6 +6,6 @@
         
         public int MealId { get; set; }
 
-        public Account Account { get; set; }
+        public Account? Account { get; set; }
     }
 }

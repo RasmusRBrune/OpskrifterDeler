@@ -43,12 +43,12 @@
     {
         Favorite obj = new()
         {
-                AccountId = Guid.Parse(identity),
+                AccountId = Guid.Empty,// Guid.Parse(identity),
                 MealId = Convert.ToInt32(MealList.MealId)
         };
-        var load = JsonSerializer.Serialize(obj, SerializerOptions);
+        var load = JsonSerializer.Serialize(obj/* , SerializerOptions */);
         HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
-        var result = await client.PostAsync("https://localhost:44384/api/Favorite", content).ConfigureAwait(false);
+        var result = await client.PostAsync("https://localhost:44384/api/Favorite/test", content).ConfigureAwait(false);
     }
 
     public class Content
