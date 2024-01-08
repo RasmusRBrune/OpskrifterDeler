@@ -1,66 +1,16 @@
 ﻿@page "/PopularDishes"
-@using Microsoft.AspNetCore.Components
-@using System.Text.Json
-@using System.Text.Json.Serialization
-@using System.Text
-@using OpskrifterDeler.Models
 @using DishDexServer.Shared;
-@inject HttpClient client
 
 <PageTitle>Popular Dishes</PageTitle>
 
-<MudText Typo="Typo.h3">Popular Dishes </MudText>
-<MudPaper Height="400px" Width="100%">
+<MudText Typo="Typo.h3" Align="Align.Center" GutterBottom><b>Popular Dishes</b></MudText>
+
+<MudPaper Width="100%" Elevation="6">
     <MudContainer Fixed="true">
         <RandomDishesRow/>
     </MudContainer>
 </MudPaper>
 
 @code {
-    private Meal MealList { get; set; }
 
-    [CascadingParameter] string identity { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        MealList = new Meal();
-
-        var result = await client.GetFromJsonAsync<Content>("https://www.themealdb.com/api/json/v1/1/random.php");
-        if (result != null)
-            MealList = result.Meals.FirstOrDefault();
-    }
-
-    public JsonSerializerOptions SerializerOptions { get; set; } = new JsonSerializerOptions()
-        {
-            PropertyNameCaseInsensitive = true,
-            ReferenceHandler = ReferenceHandler.Preserve
-        };
-
-    async Task AddToFavorite()
-    {
-        Favorite obj = new()
-        {
-                AccountId = Guid.Parse(identity),
-                MealId = Convert.ToInt32(MealList.MealId)
-        };
-        var load = JsonSerializer.Serialize(obj, SerializerOptions);
-        HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
-        var result = await client.PostAsync("https://localhost:44384/api/Favorite/", content).ConfigureAwait(false);
-    }
-
-    public class Content
-    {
-        [JsonPropertyName("meals")]
-        public List<Meal> Meals { get; set; }
-    }
-
-    public class Meal
-    {
-        [JsonPropertyName("idMeal")]
-        public string MealId { get; set; }
-        [JsonPropertyName("strMeal")]
-        public string Name { get; set; }
-        [JsonPropertyName("strMealThumb")]
-        public string MealThumb { get; set; }
-    }
 }

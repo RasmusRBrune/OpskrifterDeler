@@ -1,6 +1,9 @@
 ﻿@page "/meal/{Id:int}"
 @using MudBlazor
 @using System.Text.Json.Serialization
+@using System.Text.Json
+@using System.Text
+@using OpskrifterDeler.Models
 @inject HttpClient client
 
 <PageTitle>DishDex • @meal.strMeal</PageTitle>
@@ -91,6 +94,8 @@
                 }
             </MudItem>
         </MudGrid>
+
+        <MudIconButton Icon="@Icons.Material.Filled.Add" Title="Add to favorite" OnClick="@((e) => AddToFavorite())" />
     </MudContainer>
 </MudPaper>
 
@@ -100,6 +105,26 @@
 
     [Parameter]
     public int Id { get; set; } = 0;
+
+    [CascadingParameter] string identity { get; set; }
+
+    public JsonSerializerOptions SerializerOptions { get; set; } = new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
+
+    async Task AddToFavorite()
+    {
+        Favorite obj = new()
+        {
+            AccountId = Guid.Parse(identity),
+            MealId = Convert.ToInt32(Id)
+        };
+        var load = JsonSerializer.Serialize(obj, SerializerOptions);
+        HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
+        var result = await client.PostAsync("https://localhost:44384/api/Favorite/", content).ConfigureAwait(false);
+    }
 
     protected override async Task OnInitializedAsync()
     {
