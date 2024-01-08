@@ -4,6 +4,7 @@
 @using System.Text.Json.Serialization
 @using System.Text
 @using OpskrifterDeler.Models
+@using DishDexServer.Shared;
 @inject HttpClient client
 
 <PageTitle>Popular Dishes</PageTitle>
@@ -11,11 +12,7 @@
 <MudText Typo="Typo.h3">Popular Dishes </MudText>
 <MudPaper Height="400px" Width="100%">
     <MudContainer Fixed="true">
-        <MudPaper Height="400px" Width="100%" Square="true" Class="mud-theme-primary">
-            <MudImage Src="@MealList.MealThumb" />
-            <MudText>@MealList.Name @MealList.MealId</MudText>
-            <MudIconButton Icon="@Icons.Material.Filled.Add" Title="Add to favorite" OnClick="@((e) => AddToFavorite())" />
-        </MudPaper>
+        <RandomDishesRow/>
     </MudContainer>
 </MudPaper>
 
@@ -43,12 +40,12 @@
     {
         Favorite obj = new()
         {
-                AccountId = Guid.Empty,// Guid.Parse(identity),
+                AccountId = Guid.Parse(identity),
                 MealId = Convert.ToInt32(MealList.MealId)
         };
-        var load = JsonSerializer.Serialize(obj/* , SerializerOptions */);
+        var load = JsonSerializer.Serialize(obj, SerializerOptions);
         HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
-        var result = await client.PostAsync("https://localhost:44384/api/Favorite/test", content).ConfigureAwait(false);
+        var result = await client.PostAsync("https://localhost:44384/api/Favorite/", content).ConfigureAwait(false);
     }
 
     public class Content

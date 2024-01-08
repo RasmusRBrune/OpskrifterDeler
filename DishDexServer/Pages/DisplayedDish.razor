@@ -1,0 +1,201 @@
+﻿@page "/meal/{Id:int}"
+@using MudBlazor
+@using System.Text.Json.Serialization
+@inject HttpClient client
+
+<PageTitle>DishDex • @meal.strMeal</PageTitle>
+
+<MudPaper Width="100%" Elevation="2">
+    <MudContainer Fixed="true">
+        <MudGrid>
+            <MudItem xs="10">
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.h4"><b>@meal.strMeal</b></MudText>
+                </MudPaper>
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudImage Src="@meal.strMealThumb" Width="250" Elevation="4" />
+                </MudPaper>
+                @if (meal.strDrinkAlternate != null)
+                {
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.body2">DrinkAlternate: <b>@meal.strDrinkAlternate </b></MudText>
+                </MudPaper>
+                }
+                @if (meal.strCategory != null)
+                {
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.body2">Category: <b>@meal.strCategory </b></MudText>
+                </MudPaper>
+                }
+                @if (meal.strArea != null)
+                {
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.body2">Area: <b>@meal.strArea</b></MudText>
+                </MudPaper>
+                }
+                @if (meal.strInstructions != null)
+                {
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class="p-4 rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2">@((MarkupString)"Instructions:<br /><br />")<b>@((MarkupString)meal.strInstructions.Replace(Environment.NewLine, "<br />")) </b>@((MarkupString)"<br />")</MudText>
+                </MudPaper>
+                }
+                @if (meal.strTags != null)
+                {
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.body2">Tags: <b>@meal.strTags </b></MudText>
+                </MudPaper>
+                }
+                @if (meal.strYoutube != null)
+                {
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.body2">YouTube: <b><a href="@meal.strYoutube ">See Video Here</a></b></MudText>
+                </MudPaper>
+                }
+                @if (meal.strSource != null)
+                {
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.body2">Source: <b><a href="@meal.strSource">Read Original Here</a></b></MudText>
+                </MudPaper>
+                }
+                @if (meal.strImageSource != null)
+                {
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.body2"><b>@meal.strImageSource  </b></MudText>
+                </MudPaper>
+                }
+                @if (meal.strCreativeCommonsConfirmed != null)
+                {
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.body2"><b>@meal.strCreativeCommonsConfirmed  </b></MudText>
+                </MudPaper>
+                }
+                @if (meal.dateModified != null)
+                {
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.body2"><b>@meal.dateModified  </b></MudText>
+                </MudPaper>
+                }
+            </MudItem>
+            <MudItem xs="2">
+                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.h4"><b>Ingredients</b></MudText>
+                </MudPaper>
+                @foreach (var m in meal.strIngredients)
+                {
+                    if (m.Item1 != "")
+                    {
+                        <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="2">
+                            <MudText Typo="Typo.body2"><b>@m.Item1 @m.Item2 </b></MudText>
+                        </MudPaper>
+                    }
+                }
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    private MudTheme Theme = new MudTheme();
+    private Meal meal { get; set; }
+
+    [Parameter]
+    public int Id { get; set; } = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        meal = new();
+
+        if (Id != 0)
+        {
+            var result = await client.GetFromJsonAsync<Content>($"https://www.themealdb.com/api/json/v1/1/lookup.php?i={Id}");
+            if (result != null)
+            {
+                meal = result.Meals.FirstOrDefault();
+                meal.strIngredients.Add(new(meal.strIngredient1, meal.strMeasure1));
+                meal.strIngredients.Add(new(meal.strIngredient2, meal.strMeasure2));
+                meal.strIngredients.Add(new(meal.strIngredient3, meal.strMeasure3));
+                meal.strIngredients.Add(new(meal.strIngredient4, meal.strMeasure4));
+                meal.strIngredients.Add(new(meal.strIngredient5, meal.strMeasure5));
+                meal.strIngredients.Add(new(meal.strIngredient6, meal.strMeasure6));
+                meal.strIngredients.Add(new(meal.strIngredient7, meal.strMeasure7));
+                meal.strIngredients.Add(new(meal.strIngredient8, meal.strMeasure8));
+                meal.strIngredients.Add(new(meal.strIngredient9, meal.strMeasure9));
+                meal.strIngredients.Add(new(meal.strIngredient10, meal.strMeasure10));
+                meal.strIngredients.Add(new(meal.strIngredient11, meal.strMeasure11));
+                meal.strIngredients.Add(new(meal.strIngredient12, meal.strMeasure12));
+                meal.strIngredients.Add(new(meal.strIngredient13, meal.strMeasure13));
+                meal.strIngredients.Add(new(meal.strIngredient14, meal.strMeasure14));
+                meal.strIngredients.Add(new(meal.strIngredient15, meal.strMeasure15));
+                meal.strIngredients.Add(new(meal.strIngredient16, meal.strMeasure16));
+                meal.strIngredients.Add(new(meal.strIngredient17, meal.strMeasure17));
+                meal.strIngredients.Add(new(meal.strIngredient18, meal.strMeasure18));
+                meal.strIngredients.Add(new(meal.strIngredient19, meal.strMeasure19));
+                meal.strIngredients.Add(new(meal.strIngredient20, meal.strMeasure20));
+            }
+        }
+    }
+
+    public class Content
+    {
+        [JsonPropertyName("meals")]
+        public List<Meal> Meals { get; set; }
+    }
+
+    public class Meal
+    {
+        public string idMeal { get; set; }
+        public string strMeal { get; set; }
+        public string strDrinkAlternate { get; set; }
+        public string strCategory { get; set; }
+        public string strArea { get; set; }
+        public string strInstructions { get; set; }
+        public string strMealThumb { get; set; }
+        public string strTags { get; set; }
+        public string strYoutube { get; set; }
+        public List<(string, string)> strIngredients { get; set; } = new();
+        public string strIngredient1 { get; set; }
+        public string strIngredient2 { get; set; }
+        public string strIngredient3 { get; set; }
+        public string strIngredient4 { get; set; }
+        public string strIngredient5 { get; set; }
+        public string strIngredient6 { get; set; }
+        public string strIngredient7 { get; set; }
+        public string strIngredient8 { get; set; }
+        public string strIngredient9 { get; set; }
+        public string strIngredient10 { get; set; }
+        public string strIngredient11 { get; set; }
+        public string strIngredient12 { get; set; }
+        public string strIngredient13 { get; set; }
+        public string strIngredient14 { get; set; }
+        public string strIngredient15 { get; set; }
+        public string strIngredient16 { get; set; }
+        public string strIngredient17 { get; set; }
+        public string strIngredient18 { get; set; }
+        public string strIngredient19 { get; set; }
+        public string strIngredient20 { get; set; }
+        public string strMeasure1 { get; set; }
+        public string strMeasure2 { get; set; }
+        public string strMeasure3 { get; set; }
+        public string strMeasure4 { get; set; }
+        public string strMeasure5 { get; set; }
+        public string strMeasure6 { get; set; }
+        public string strMeasure7 { get; set; }
+        public string strMeasure8 { get; set; }
+        public string strMeasure9 { get; set; }
+        public string strMeasure10 { get; set; }
+        public string strMeasure11 { get; set; }
+        public string strMeasure12 { get; set; }
+        public string strMeasure13 { get; set; }
+        public string strMeasure14 { get; set; }
+        public string strMeasure15 { get; set; }
+        public string strMeasure16 { get; set; }
+        public string strMeasure17 { get; set; }
+        public string strMeasure18 { get; set; }
+        public string strMeasure19 { get; set; }
+        public string strMeasure20 { get; set; }
+        public string strSource { get; set; }
+        public string strImageSource { get; set; }
+        public string strCreativeCommonsConfirmed { get; set; }
+        public string dateModified { get; set; }
+    }
+}

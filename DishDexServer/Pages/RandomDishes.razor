@@ -1,65 +1,18 @@
 ﻿@page "/RandomDishes"
-@using Microsoft.AspNetCore.Components
-@using System.Text.Json
-@using System.Text.Json.Serialization
-@inject HttpClient client
+@using DishDexServer.Shared;
 
 <PageTitle>Random Dishes</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom>Random Dishes</MudText>
+<MudText Typo="Typo.h3" Align="Align.Center" GutterBottom><b>Random Dishes</b></MudText>
 
-<MudPaper Height="400px" Width="100%">
+<MudPaper Width="100%" Elevation="6">
     <MudContainer Fixed="true">
-        <MudPaper Width="100%" Square="true">
-            <MudGrid>
-                @foreach (Meal m in MealList)
-                {
-                    <MudItem xs="3">
-                        <MudPaper Class="mud-theme-primary p-2 d-flex align-center justify-center mud-width-full">
-                            <MudImage Src="@m.MealThumb" Width="250"/>
-                            </MudPaper>
-                        <MudPaper Class="mud-theme-primary p-2 d-flex align-center justify-center mud-width-full">
-                            <MudText Typo="Typo.body2">@m.Name</MudText>
-                        </MudPaper>
-                    </MudItem>
-                }
-            </MudGrid>
-        </MudPaper>
+        <RandomDishesRow/>
+        <RandomDishesRow/>
+        <RandomDishesRow/>
     </MudContainer>
 </MudPaper>
 
-
-
 @code {
-    private List<Meal> MealList { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        MealList = new List<Meal>();
-
-        for (int i = 0; i < 10; i++)
-        {
-            var result = await client.GetFromJsonAsync<Content>("https://www.themealdb.com/api/json/v1/1/random.php");
-            if (result != null)
-            {
-                MealList.Add(result.Meals.FirstOrDefault());
-            }
-        }
-    }
-
-    public class Content
-    {
-        [JsonPropertyName("meals")]
-        public List<Meal> Meals { get; set; }
-    }
-
-    public class Meal
-    {
-        [JsonPropertyName("idMeal")]
-        public string MealId { get; set; }
-        [JsonPropertyName("strMeal")]
-        public string Name { get; set; }        
-        [JsonPropertyName("strMealThumb")]
-        public string MealThumb { get; set; }
-    }
 }
