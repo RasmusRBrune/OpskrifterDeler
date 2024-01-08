@@ -1,5 +1,14 @@
 ﻿@page "/Favorite"
 @using DishDexServer.Shared;
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using MudBlazor
+@using OpskrifterDeler
+@using OpskrifterDeler.Models
+@using System.Text
+@inject HttpClient client
+@inject NavigationManager nav
+@inject MealAPI api
 
 <PageTitle>DishDex • Your Favorites</PageTitle>
 
@@ -7,9 +16,121 @@
 
 <MudPaper Width="100%" Elevation="6">
     <MudContainer Fixed="true">
+        <MudGrid>
+            @foreach (Meal m in MealList)
+            {
+                <MudItem xs="3" @onclick='() => nav.NavigateTo($"/meal/{m.idMeal}")' Class="cursor-pointer p-2">
+                    <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3}; color:{Colors.Shades.White};")">
+                        <MudImage Src="@m.strMealThumb" Width="250" Elevation="4" />
+                    </MudPaper>
+                    <MudPaper Class="orange darken3 p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3}; color:{Colors.Shades.White};")">
+                        <MudText Typo="Typo.body2"><b>@m.strMeal</b></MudText>
+                        <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Filled.Delete" Style="@($"color:{Colors.Shades.White};")" Title="Add to favorite" OnClick="@((e) => RemoveFromFavorite(m.idMeal))" />
+                    </MudPaper>
+                </MudItem>
+            }
+        </MudGrid>
     </MudContainer>
 </MudPaper>
 
 @code {
+    [CascadingParameter] string identity { get; set; }
+    private List<Meal> MealList { get; set; }
+    private List<Favorite> Favorites { get; set; }
 
+    public JsonSerializerOptions SerializerOptions { get; set; } = new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
+
+    protected override async Task OnInitializedAsync()
+    {
+        MealList = new List<Meal>();
+        Favorites = new List<Favorite>();
+
+        var fav = await api.GetAllFavorite(identity);
+
+        if (fav != null)
+        {
+            Favorites = fav;
+            foreach (Favorite f in Favorites)
+            {
+                MealList.Add((await client.GetFromJsonAsync<Content>($"https://www.themealdb.com/api/json/v1/1/lookup.php?i={f.MealId}")).Meals.FirstOrDefault());
+            }
+
+        }
+    }
+
+    async Task RemoveFromFavorite(string id)
+    {
+        var result = await api.DeleteFavoriteById(Convert.ToInt32(id), Guid.Parse(identity));
+        if (result)
+        {
+            MealList.Remove(MealList.FirstOrDefault(e => e.idMeal == id));
+        }
+    }
+
+    public class Content
+    {
+        [JsonPropertyName("meals")]
+        public List<Meal> Meals { get; set; }
+    }
+
+    public class Meal
+    {
+        public string idMeal { get; set; }
+        public string strMeal { get; set; }
+        public object strDrinkAlternate { get; set; }
+        public string strCategory { get; set; }
+        public string strArea { get; set; }
+        public string strInstructions { get; set; }
+        public string strMealThumb { get; set; }
+        public string strTags { get; set; }
+        public string strYoutube { get; set; }
+        public string strIngredient1 { get; set; }
+        public string strIngredient2 { get; set; }
+        public string strIngredient3 { get; set; }
+        public string strIngredient4 { get; set; }
+        public string strIngredient5 { get; set; }
+        public string strIngredient6 { get; set; }
+        public string strIngredient7 { get; set; }
+        public string strIngredient8 { get; set; }
+        public string strIngredient9 { get; set; }
+        public string strIngredient10 { get; set; }
+        public string strIngredient11 { get; set; }
+        public string strIngredient12 { get; set; }
+        public string strIngredient13 { get; set; }
+        public string strIngredient14 { get; set; }
+        public string strIngredient15 { get; set; }
+        public string strIngredient16 { get; set; }
+        public string strIngredient17 { get; set; }
+        public string strIngredient18 { get; set; }
+        public string strIngredient19 { get; set; }
+        public string strIngredient20 { get; set; }
+        public string strMeasure1 { get; set; }
+        public string strMeasure2 { get; set; }
+        public string strMeasure3 { get; set; }
+        public string strMeasure4 { get; set; }
+        public string strMeasure5 { get; set; }
+        public string strMeasure6 { get; set; }
+        public string strMeasure7 { get; set; }
+        public string strMeasure8 { get; set; }
+        public string strMeasure9 { get; set; }
+        public string strMeasure10 { get; set; }
+        public string strMeasure11 { get; set; }
+        public string strMeasure12 { get; set; }
+        public string strMeasure13 { get; set; }
+        public string strMeasure14 { get; set; }
+        public string strMeasure15 { get; set; }
+        public string strMeasure16 { get; set; }
+        public string strMeasure17 { get; set; }
+        public string strMeasure18 { get; set; }
+        public string strMeasure19 { get; set; }
+        public string strMeasure20 { get; set; }
+        public string strSource { get; set; }
+        public object strImageSource { get; set; }
+        public object strCreativeCommonsConfirmed { get; set; }
+        public object dateModified { get; set; }
+    }
 }
