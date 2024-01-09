@@ -6,7 +6,7 @@
 <MudGrid>
     @foreach (Meal m in MealList)
     {
-        <MudItem xs="3" @onclick='() => nav.NavigateTo($"/meal/{m.idMeal}")' >
+        <MudItem Class="d-flex row" xs="3" @onclick='() => nav.NavigateTo($"/meal/{m.idMeal}")' >
             <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3};")">
                 @if (dataLoaded)
                 {
@@ -17,7 +17,7 @@
                     <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="400px" />
                 }
             </MudPaper>
-            <MudPaper Class="orange darken3 p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3};")">
+            <MudPaper Class="orange darken3 px-5 py-2 d-flex align-center justify-center rounded-0" Style="@($"background:{Colors.Orange.Darken3};")">
                 <MudText Typo="Typo.body2"><b>@m.strMeal</b></MudText>
             </MudPaper>
         </MudItem>

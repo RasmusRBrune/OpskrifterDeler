@@ -1,11 +1,12 @@
-﻿<AuthorizeView>
+﻿@inject NavigationManager nav
+<AuthorizeView>
     <Authorized>
-        <a href="Identity/Account/Manage">Hello, @context.User.Identity?.Name!</a>
-        <form method="post" action="Identity/Account/LogOut">
-            <button type="submit" class="nav-link btn btn-link">Log out</button>
-        </form>
-        <MudIconButton Icon="@Icons.Material.Filled.Person" Color="Color.Inherit" Title="Account" OnClick="@((e) => AccDrawerToggle())" />
-        <MudIconButton Icon="@Icons.Material.Filled.Star" Color="Color.Inherit" Title="Favorites" Href="Favorite" Match="NavLinkMatch.Prefix" />
+        <MudForm method="post" action="Identity/Account/LogOut">
+            <MudButton ButtonType="ButtonType.Submit" EndIcon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Variant="Variant.Filled" IconColor="Color.Warning">Logout</MudButton>
+        </MudForm>
+        <MudButton EndIcon="@Icons.Material.Filled.Person" Color="Color.Inherit" Href="Identity/Account/Manage" Variant="Variant.Filled" IconColor="Color.Warning">Account</MudButton>
+        @* <MudButton EndIcon="@Icons.Material.Filled.Person" Color="Color.Inherit" OnClick="@(() => AccDrawerToggle())" Variant="Variant.Filled" IconColor="Color.Warning">Account</MudButton> *@
+        <MudButton EndIcon="@Icons.Material.Filled.Star" Color="Color.Inherit" OnClick="@(() => nav.NavigateTo("Favorite"))" Variant="Variant.Filled" IconColor="Color.Warning">Favorites</MudButton>
         <MudDrawer Variant="DrawerVariant.Temporary" Anchor="Anchor.End" @bind-Open="_accrawerOpen" Elevation="1">
             <MudDrawerHeader>
                 <MudText Typo="Typo.h6">Username</MudText>
@@ -14,8 +15,8 @@
         </MudDrawer>
     </Authorized>
     <NotAuthorized>
-        <a style="margin-right:10px" href="Identity/Account/Register">Register</a>
-        <a href="Identity/Account/Login">Log in</a>
+        <MudButton EndIcon="@Icons.Material.Filled.Edit" Color="Color.Inherit" Href="Identity/Account/Register" Variant="Variant.Filled" IconColor="Color.Warning">Register</MudButton>
+        <MudButton EndIcon="@Icons.Material.Filled.Login" Color="Color.Inherit" Href="Identity/Account/Login" Variant="Variant.Filled" IconColor="Color.Warning">Login</MudButton>
     </NotAuthorized>
 </AuthorizeView>
 @code{

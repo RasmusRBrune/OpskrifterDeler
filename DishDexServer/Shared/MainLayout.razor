@@ -10,11 +10,14 @@
 
 <MudLayout>
      <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => NavDrawerToggle())" />
+        <MudPaper Width="400px" Elevation="0" Style="background: transparent;">
+             <MudButton StartIcon="@Icons.Material.Filled.Menu" OnClick="@((e) => NavDrawerToggle())" Variant="Variant.Filled" IconColor="Color.Warning">Menu</MudButton>
+         </MudPaper>
         <MudSpacer />
-        <MudText Typo="Typo.h3">DishDex</MudText>
+         <MudText Typo="Typo.h3">Dish</MudText>
+         <MudText Typo="Typo.h3" Style="@($"color:{Colors.Orange.Default};")">Dex</MudText>
         <MudSpacer />
-        <LoginDisplay/>
+        <LoginDisplay />
     </MudAppBar>
      <MudDrawer @bind-Open="_navdrawerOpen" Elevation="1">
         <MudDrawerHeader>
