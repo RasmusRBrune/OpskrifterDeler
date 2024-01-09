@@ -23,7 +23,7 @@ namespace OpskrifterDeler
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
-        public async Task<List<Favorite>> GetAllFavorite(string id)
+        public async Task<List<Favorite>> GetAllFavorites(string id)
         {
             var response = await client.GetAsync($"Favorite/getall/{id}").ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
@@ -36,6 +36,16 @@ namespace OpskrifterDeler
                 }
             }
             return new List<Favorite>();
+        }
+
+        public async Task<bool> GetFavoriteStatus(Favorite entity)
+        {
+            var response = await client.GetAsync($"Favorite/getsingle/{entity.MealId}/{entity.AccountId}").ConfigureAwait(false);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> DeleteFavoriteById(int mealId, Guid id)

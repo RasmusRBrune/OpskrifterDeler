@@ -3,8 +3,10 @@
 @using System.Text.Json.Serialization
 @using System.Text.Json
 @using System.Text
+@using OpskrifterDeler
 @using OpskrifterDeler.Models
 @inject HttpClient client
+@inject MealAPI api
 
 <PageTitle>DishDex • @meal.strMeal</PageTitle>
 
@@ -78,6 +80,16 @@
                     <MudText Typo="Typo.body2"><b>@meal.dateModified  </b></MudText>
                 </MudPaper>
                 }
+                @if (fav)
+                {
+                    <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="@((e) => RemoveFromFavorite())" Color="Color.Warning" Variant="Variant.Outlined">Remove From Your Favorites</MudButton>
+                    </MudPaper>
+                }else{
+                    <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudButton StartIcon="@Icons.Material.Filled.Star" OnClick="@((e) => AddToFavorite())" Color="Color.Warning" Variant="Variant.Outlined">Add To Your Favorites</MudButton>
+                    </MudPaper>
+                }
             </MudItem>
             <MudItem xs="2">
                 <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
@@ -94,8 +106,7 @@
                 }
             </MudItem>
         </MudGrid>
-
-        <MudIconButton Icon="@Icons.Material.Filled.Add" Title="Add to favorite" OnClick="@((e) => AddToFavorite())" />
+        <!-- Fooder? -->
     </MudContainer>
 </MudPaper>
 
@@ -105,6 +116,7 @@
 
     [Parameter]
     public int Id { get; set; } = 0;
+    public bool fav { get; set; } = false;
 
     [CascadingParameter] string identity { get; set; }
 
@@ -124,6 +136,16 @@
         var load = JsonSerializer.Serialize(obj, SerializerOptions);
         HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
         var result = await client.PostAsync("https://localhost:44384/api/Favorite/", content).ConfigureAwait(false);
+        if (result.IsSuccessStatusCode) { fav = true; }
+    }
+
+    async Task RemoveFromFavorite()
+    {
+        var result = await api.DeleteFavoriteById(Convert.ToInt32(meal.idMeal), Guid.Parse(identity));
+        if (result)
+        {
+            fav = false;
+        }
     }
 
     protected override async Task OnInitializedAsync()
@@ -156,6 +178,15 @@
                 meal.strIngredients.Add(new(meal.strIngredient18, meal.strMeasure18));
                 meal.strIngredients.Add(new(meal.strIngredient19, meal.strMeasure19));
                 meal.strIngredients.Add(new(meal.strIngredient20, meal.strMeasure20));
+            }
+            if (identity != null)
+            {
+                Favorite obj = new()
+                {
+                    AccountId = Guid.Parse(identity),
+                    MealId = Convert.ToInt32(Id)
+                };
+                fav = await api.GetFavoriteStatus(obj);
             }
         }
     }

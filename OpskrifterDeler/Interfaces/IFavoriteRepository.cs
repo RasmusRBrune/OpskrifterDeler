@@ -4,7 +4,8 @@ namespace OpskrifterDeler.Interfaces
 {
     public interface IFavoriteRepository : IEntityRepository<Favorite>
     {
-        Task<IEnumerable<Favorite>> GetAllByIdAsync();
-        Task<Favorite> DeleteById(int mealId, Guid id);
+        public Task<IEnumerable<Favorite>> GetAllByIdAsync();
+        public Task<Favorite> DeleteById(int mealId, Guid id);
+        public Task<Favorite> GetSingleByIdAsync(int mealId, Guid id);
     }
 }

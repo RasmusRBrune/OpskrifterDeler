@@ -58,5 +58,22 @@ namespace OpskrifterDeler.Repositories
                 throw;
             }
         }
+        public async Task<Favorite> GetSingleByIdAsync(int mealId, Guid id)
+        {
+            try
+            {
+                var result = await _context.Favorites.FirstOrDefaultAsync(e => e.MealId == mealId && e.AccountId == id);
+                if (result != null)
+                {
+                    return result;
+                }
+                return null;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

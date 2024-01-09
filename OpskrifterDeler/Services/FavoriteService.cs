@@ -23,6 +23,12 @@ namespace OpskrifterDeler.Services
         {
             var result = await _repository.GetAllByIdAsync();
             return result;
+        } 
+        
+        public async Task<Favorite> GetSingleByIdAsync(int mealId, Guid id)
+        {
+            var result = await _repository.GetSingleByIdAsync(mealId, id);
+            return result;
         }
 
     }

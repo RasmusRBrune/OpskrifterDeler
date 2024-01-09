@@ -38,6 +38,24 @@ namespace OpskrifterDeler.Controllers
                 return Problem(ex.Message);
             }
         }
+                
+        [HttpGet("getsingle/{mealId}/{id}")]
+        public async Task<IActionResult> GetSingleById(int mealId, Guid id)
+        {
+            try
+            {
+                var result = await _service.GetSingleByIdAsync(mealId, id);
+                if (result == null)
+                {
+                    return Problem("Failed to load list");
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
 
         [HttpDelete("delete/{mealId}/{id}")]
         public async Task<IActionResult> DeleteById(int mealId, Guid id)

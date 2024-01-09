@@ -49,7 +49,7 @@
         MealList = new List<Meal>();
         Favorites = new List<Favorite>();
 
-        var fav = await api.GetAllFavorite(identity);
+        var fav = await api.GetAllFavorites(identity);
 
         if (fav != null)
         {
