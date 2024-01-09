@@ -21,7 +21,8 @@
             {
                 <MudItem xs="3" @onclick='() => nav.NavigateTo($"/meal/{m.idMeal}")' Class="cursor-pointer p-2">
                     <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3}; color:{Colors.Shades.White};")">
-                        <MudImage Src="@m.strMealThumb" Width="250" Elevation="4" />
+                        <MudImage Src="@($"{m.strMealThumb}/preview")" Width="250" Elevation="4" />
+                        @* <MudImage Src="@($"{m.strMealThumb}")" Width="250" Elevation="4" /> *@
                     </MudPaper>
                     <MudPaper Class="orange darken3 p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3}; color:{Colors.Shades.White};")">
                         <MudText Typo="Typo.body2"><b>@m.strMeal</b></MudText>

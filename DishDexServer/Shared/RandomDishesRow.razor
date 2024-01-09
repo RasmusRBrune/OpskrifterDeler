@@ -8,7 +8,7 @@
     {
         <MudItem xs="3" @onclick='() => nav.NavigateTo($"/meal/{m.idMeal}")' >
             <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3};")">
-                <MudImage Src="@m.strMealThumb" Width="250" Elevation="4"/>
+                <MudImage Src="@($"{m.strMealThumb}/preview")" Width="250" Elevation="4"/>
             </MudPaper>
             <MudPaper Class="orange darken3 p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3};")">
                 <MudText Typo="Typo.body2"><b>@m.strMeal</b></MudText>
