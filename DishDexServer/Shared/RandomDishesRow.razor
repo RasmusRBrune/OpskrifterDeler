@@ -8,7 +8,14 @@
     {
         <MudItem xs="3" @onclick='() => nav.NavigateTo($"/meal/{m.idMeal}")' >
             <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3};")">
-                <MudImage Src="@($"{m.strMealThumb}/preview")" Width="250" Elevation="4"/>
+                @if (dataLoaded)
+                {
+                    <MudImage Src="@($"{m.strMealThumb}/preview")" Width="250" Elevation="4" />
+                }
+                else
+                {
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="400px" />
+                }
             </MudPaper>
             <MudPaper Class="orange darken3 p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3};")">
                 <MudText Typo="Typo.body2"><b>@m.strMeal</b></MudText>
@@ -19,6 +26,7 @@
 
 @code{
     private List<Meal> MealList { get; set; }
+    private bool dataLoaded { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -32,6 +40,8 @@
                 MealList.Add(result.Meals.FirstOrDefault());
             }
         }
+
+        dataLoaded = true;
     }
 
     public class Content

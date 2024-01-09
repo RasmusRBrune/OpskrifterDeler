@@ -18,7 +18,14 @@
                     <MudText Typo="Typo.h4"><b>@meal.strMeal</b></MudText>
                 </MudPaper>
                 <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudImage Src="@meal.strMealThumb" Width="500" Elevation="4" />
+                    @if(dataLoaded)
+                    {
+                        <MudImage Src="@meal.strMealThumb" Width="400" Elevation="4" />
+                    }
+                    else
+                    {
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="400px"/>
+                    }
                 </MudPaper>
                 @if (meal.strDrinkAlternate != null)
                 {
@@ -117,6 +124,7 @@
     [Parameter]
     public int Id { get; set; } = 0;
     public bool fav { get; set; } = false;
+    public bool dataLoaded { get; set; } = false;
 
     [CascadingParameter] string identity { get; set; }
 
@@ -189,6 +197,7 @@
                 fav = await api.GetFavoriteStatus(obj);
             }
         }
+        dataLoaded = true;
     }
 
     public class Content
