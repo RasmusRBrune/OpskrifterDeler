@@ -1,0 +1,40 @@
+﻿@page "/area"
+@using System.Text.Json.Serialization
+@inject HttpClient client
+@inject NavigationManager nav
+
+<MudGrid>
+    @foreach (Meal m in MealList)
+    {
+        <MudItem xs="3" @onclick='() => nav.NavigateTo($"/area/{m.strArea}")'>
+            <MudPaper Class="orange darken3 p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3};")">
+                <MudText Typo="Typo.body2"><b>@m.strArea</b></MudText>
+            </MudPaper>
+        </MudItem>
+    }
+</MudGrid>
+
+@code{
+    private List<Meal> MealList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MealList = new List<Meal>();
+
+        var result = await client.GetFromJsonAsync<Root>("https://www.themealdb.com/api/json/v1/1/list.php?a=list");
+        if (result != null)
+        {
+            MealList = result.meals;
+        }
+    }
+
+    public class Meal
+    {
+        public string strArea { get; set; }
+    }
+
+    public class Root
+    {
+        public List<Meal> meals { get; set; }
+    }
+}

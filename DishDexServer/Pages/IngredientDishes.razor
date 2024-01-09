@@ -1,0 +1,50 @@
+﻿@page "/Ingredient/{In}"
+@using System.Text.Json.Serialization
+@inject HttpClient client
+@inject NavigationManager nav
+
+<MudGrid>
+    @foreach (Meal m in MealList)
+    {
+        <MudItem Class="d-flex row" xs="3" @onclick='() => nav.NavigateTo($"/meal/{m.idMeal}")'>
+            <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3};")">
+                <MudImage Src="@($"{m.strMealThumb}/preview")" Width="250" Elevation="4" />
+            </MudPaper>            
+            <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Style="@($"background:{Colors.Orange.Darken3};")">
+                <MudText Typo="Typo.body2"><b>@m.strMeal</b></MudText>
+            </MudPaper>
+        </MudItem>
+    }
+</MudGrid>
+
+@code {
+    [Parameter]
+    public string In { get; set; } = "";
+
+    private List<Meal> MealList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MealList = new List<Meal>();
+
+        var result = await client.GetFromJsonAsync<Root>($"https://www.themealdb.com/api/json/v1/1/filter.php?i={In}");
+        if (result != null)
+        {
+            MealList = result.meals;
+        }
+    }
+
+    public class Meal
+    {
+        public string strMeal { get; set; }
+        public string strMealThumb { get; set; }
+        public string idMeal { get; set; }
+    }
+
+    public class Root
+    {
+        public List<Meal> meals { get; set; }
+    }
+
+
+}

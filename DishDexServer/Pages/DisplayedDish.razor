@@ -35,14 +35,14 @@
                 }
                 @if (meal.strCategory != null)
                 {
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.body2">Category: <b>@meal.strCategory </b></MudText>
-                </MudPaper>
+                    <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2">Category: <b><a href="@($"/Category/{meal.strCategory}")">@meal.strCategory</a></b></MudText>
+                    </MudPaper>
                 }
                 @if (meal.strArea != null)
                 {
                 <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.body2">Area: <b>@meal.strArea</b></MudText>
+                    <MudText Typo="Typo.body2">Area: <b><a href="@($"/area/{meal.strArea}")">@meal.strArea</a></b></MudText>
                 </MudPaper>
                 }
                 @if (meal.strInstructions != null)
@@ -123,6 +123,7 @@
 
     [Parameter]
     public int Id { get; set; } = 0;
+
     public bool fav { get; set; } = false;
     public bool dataLoaded { get; set; } = false;
 
