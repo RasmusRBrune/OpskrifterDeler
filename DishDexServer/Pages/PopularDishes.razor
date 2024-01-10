@@ -19,7 +19,7 @@
     </MudContainer>
 </MudPaper>
 
-@code {
+    @code {
     private Meal MealList { get; set; }
 
     [CascadingParameter] string identity { get; set; }
@@ -41,14 +41,17 @@
 
     async Task AddToFavorite()
     {
+        var acc = await client.GetFromJsonAsync<Account>($"https://localhost:7274/api/Account/GetAccountById/{identity}");
         Favorite obj = new()
         {
-                AccountId = Guid.Empty,// Guid.Parse(identity),
+
+                AccountId = Guid.Parse(identity),
                 MealId = Convert.ToInt32(MealList.MealId)
+                //Account = acc
         };
         var load = JsonSerializer.Serialize(obj/* , SerializerOptions */);
         HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
-        var result = await client.PostAsync("https://localhost:44384/api/Favorite/test", content).ConfigureAwait(false);
+        var result = await client.PostAsync("https://localhost:7274/api/Favorite/test", content).ConfigureAwait(false);
     }
 
     public class Content
