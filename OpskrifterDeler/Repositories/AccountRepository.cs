@@ -29,7 +29,8 @@ namespace OpskrifterDeler.Repositories
 
         public async Task<Account> GetAccountByUserId(Guid guid)
         {
-            return await _context.Accounts.FirstOrDefaultAsync(x => x.AccountId == guid);
+            var holder = await _dbContext.Accounts.FirstOrDefaultAsync(x => x.AccountId == guid);
+            return holder;
         }
     }
 }

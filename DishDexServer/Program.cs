@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor;
 using MudBlazor.Services;
+using OpskrifterDeler.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
