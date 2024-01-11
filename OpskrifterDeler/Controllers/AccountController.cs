@@ -22,11 +22,17 @@ namespace OpskrifterDeler.Controllers
         {
             try
             {
-                var result = _accountService.GetAccountByUserId(Guid.Parse(id));
+                var result = await _accountService.GetAccountByUserId(Guid.Parse(id));
                 if (result is not null)
                 {
                     return Ok(result);
                 }
+                var temp = await _accountService.AddAsync(new Account { Id = Guid.Parse(id), AccountId = Guid.Parse(id) });
+                if (temp is not null)
+                {
+                    return Ok(temp);
+                }
+
                 return BadRequest("The Account does not exist");
             }
             catch (Exception e)

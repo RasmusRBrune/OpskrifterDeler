@@ -12,7 +12,8 @@ namespace OpskrifterDeler.Services
         }
         public async Task<Account> GetAccountByUserId(Guid guid)
         {
-            return await _accountRepository.GetAccountByUserId(guid);
+            var result = await _accountRepository.GetAccountByUserId(guid);
+            return result;
         }
         
     }

@@ -47,8 +47,8 @@
         if (user.Identity is not null && user.Identity.IsAuthenticated)
         {
             identity = user.FindFirstValue(ClaimTypes.NameIdentifier);
-            
-            if (await client.GetFromJsonAsync<Account>($"https://localhost:7274/api/Account/{identity}") is null)
+            var temp = await client.GetFromJsonAsync<Account>($"https://localhost:44384/api/Account/GetAccountById/{identity}");
+            if (temp is null)
             {
                 Account obj = new()
                 {
@@ -57,7 +57,7 @@
                 };
                 var load = JsonSerializer.Serialize(obj/* , SerializerOptions */);
                 HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
-                var result = await client.PostAsync("https://localhost:7274/api/Account", content).ConfigureAwait(false);
+                var result = await client.PostAsync("https://localhost:44384/api/Account", content).ConfigureAwait(false);
             }
             
         }
