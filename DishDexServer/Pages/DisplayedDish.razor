@@ -11,106 +11,149 @@
 <PageTitle>DishDex • @meal.strMeal</PageTitle>
 
 <MudPaper Width="100%" Elevation="2">
-    <MudContainer Fixed="true">
-        <MudGrid>
+        <MudContainer Fixed="true" Style="@($"background:{Color.Transparent};")" Class="border-solid border-2 mud-border-warning py-2">
+            <MudGrid>
             <MudItem xs="10">
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.h4"><b>@meal.strMeal</b></MudText>
+                <MudPaper Style="@($"background:{Color.Default};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.h4" Class="mr-2"><b>@meal.strMeal </b></MudText>
                 </MudPaper>
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    @if(dataLoaded)
+                <MudPaper Style="@($"background:{Color.Default};")" Class="px-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.body2">
+                        Rating:
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            if (i == (int)avgRating)
+                            {
+                                <MudIcon Icon="@(0.5<=avgRating%(int)avgRating ? Icons.Material.Filled.StarHalf : Icons.Material.Filled.StarOutline)" Color="Color.Warning"></MudIcon>
+                            }
+                            else
+                            {
+                                <MudIcon Icon="@(i <= avgRating ? Icons.Material.Filled.Star : Icons.Material.Filled.StarOutline)" Color="Color.Warning"></MudIcon>
+                            }
+                        }
+                        (<b>@avgRating</b>/5)
+                    </MudText>
+                    </MudPaper>
+                <MudPaper Style="@($"background:{Color.Default};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    @if (dataLoaded)
                     {
                         <MudImage Src="@meal.strMealThumb" Width="400" Elevation="4" />
                     }
                     else
                     {
-                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="400px"/>
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="400px" />
                     }
                 </MudPaper>
                 @if (meal.strDrinkAlternate != null)
                 {
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.body2">DrinkAlternate: <b>@meal.strDrinkAlternate </b></MudText>
-                </MudPaper>
+                    <MudPaper Style="@($"background:{Color.Default};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2">DrinkAlternate: <b>@meal.strDrinkAlternate </b></MudText>
+                    </MudPaper>
                 }
                 @if (meal.strCategory != null)
                 {
-                    <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudPaper Style="@($"background:{Color.Default};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
                         <MudText Typo="Typo.body2">Category: <b><a href="@($"/Category/{meal.strCategory}")">@meal.strCategory</a></b></MudText>
                     </MudPaper>
                 }
                 @if (meal.strArea != null)
                 {
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.body2">Area: <b><a href="@($"/area/{meal.strArea}")">@meal.strArea</a></b></MudText>
-                </MudPaper>
+                    <MudPaper Style="@($"background:{Color.Default};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2">Area: <b><a href="@($"/area/{meal.strArea}")">@meal.strArea</a></b></MudText>
+                    </MudPaper>
                 }
                 @if (meal.strInstructions != null)
                 {
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class="p-4 rounded-0" Elevation="0">
+                    <MudPaper Style="@($"background:{Color.Default};")" Class="p-4 rounded-0" Elevation="0">
                         <MudText Typo="Typo.body2">@((MarkupString)"Instructions:<br /><br />")<b>@((MarkupString)meal.strInstructions.Replace(Environment.NewLine, "<br />")) </b>@((MarkupString)"<br />")</MudText>
-                </MudPaper>
+                    </MudPaper>
                 }
                 @if (meal.strTags != null)
                 {
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.body2">Tags: <b>@meal.strTags </b></MudText>
-                </MudPaper>
+                    <MudPaper Style="@($"background:{Color.Default};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2">Tags: <b>@meal.strTags </b></MudText>
+                    </MudPaper>
                 }
                 @if (meal.strYoutube != null)
                 {
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.body2">YouTube: <b><a href="@meal.strYoutube ">See Video Here</a></b></MudText>
-                </MudPaper>
+                    <MudPaper Style="@($"background:{Color.Default};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2">YouTube: <b><a href="@meal.strYoutube ">See Video Here</a></b></MudText>
+                    </MudPaper>
                 }
                 @if (meal.strSource != null)
                 {
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.body2">Source: <b><a href="@meal.strSource">Read Original Here</a></b></MudText>
-                </MudPaper>
+                    <MudPaper Style="@($"background:{Color.Default};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2">Source: <b><a href="@meal.strSource">Read Original Here</a></b></MudText>
+                    </MudPaper>
                 }
                 @if (meal.strImageSource != null)
                 {
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.body2"><b>@meal.strImageSource  </b></MudText>
-                </MudPaper>
+                    <MudPaper Style="@($"background:{Color.Default};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2"><b>@meal.strImageSource  </b></MudText>
+                    </MudPaper>
                 }
                 @if (meal.strCreativeCommonsConfirmed != null)
                 {
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.body2"><b>@meal.strCreativeCommonsConfirmed  </b></MudText>
-                </MudPaper>
+                    <MudPaper Style="@($"background:{Color.Default};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2"><b>@meal.strCreativeCommonsConfirmed  </b></MudText>
+                    </MudPaper>
                 }
                 @if (meal.dateModified != null)
                 {
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.body2"><b>@meal.dateModified  </b></MudText>
-                </MudPaper>
+                    <MudPaper Style="@($"background:{Color.Default};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2"><b>@meal.dateModified  </b></MudText>
+                    </MudPaper>
                 }
+
                 @if (fav)
                 {
                     <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
                         <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="@((e) => RemoveFromFavorite())" Color="Color.Warning" Variant="Variant.Outlined">Remove From Your Favorites</MudButton>
                     </MudPaper>
-                }else{
+                }
+                else
+                {
                     <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
                         <MudButton StartIcon="@Icons.Material.Filled.Star" OnClick="@((e) => AddToFavorite())" Color="Color.Warning" Variant="Variant.Outlined">Add To Your Favorites</MudButton>
                     </MudPaper>
                 }
-            </MudItem>
-            <MudItem xs="2">
-                <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
-                    <MudText Typo="Typo.h4"><b>Ingredients</b></MudText>
-                </MudPaper>
-                @foreach (var m in meal.strIngredients)
+
+                @if (rated)
                 {
-                    if (m.Item1 != "")
-                    {
-                        <MudPaper Style="@($"background:{Colors.Orange.Darken3};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="2">
-                            <MudText Typo="Typo.body2"><b>@m.Item1 @m.Item2 </b></MudText>
-                        </MudPaper>
-                    }
+                    <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2" Class="mr-2">Your Rating: </MudText>
+                        @foreach (var r in ratingList)
+                        {
+                            <MudIconButton Icon="@(r.index <= rating ? Icons.Material.Filled.Star : Icons.Material.Filled.StarOutline)" OnClick="@((e) => ChangeRating(r.index))" Color="Color.Warning" Variant="Variant.Outlined"></MudIconButton>
+                        }
+                    </MudPaper>
+                }else
+                {
+                    <MudPaper Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                        <MudText Typo="Typo.body2" Class="mr-2">Rate the Dish: </MudText>
+                        @foreach (var r in ratingList)
+                        {
+                            <MudIconButton Icon="@Icons.Material.Filled.StarOutline" OnClick="@((e) => ChangeRating(r.index))" Color="Color.Warning" Variant="Variant.Outlined"></MudIconButton>
+                        }
+                    </MudPaper>
                 }
+
+            </MudItem>
+            <MudItem xs="2" >
+                <MudPaper Class="border-solid border-2 mud-border-warning mt-4">
+                <MudPaper Style="@($"background:{Color.Default};")" Class="p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="0">
+                    <MudText Typo="Typo.h4"><b>Ingredients</b></MudText>
+                    </MudPaper>
+                    @foreach (var m in meal.strIngredients)
+                    {
+                        if (m.Item1 != "")
+                        {
+                            <MudPaper Style="@($"background:{Color.Default};")" Class=" p-2 d-flex align-center justify-center mud-width-full rounded-0" Elevation="2">
+                                <MudText Typo="Typo.body2"><b>@m.Item1 @m.Item2 </b></MudText>
+                            </MudPaper>
+                        }
+                    }
+                </MudPaper>
             </MudItem>
         </MudGrid>
         <!-- Fooder? -->
@@ -120,11 +163,15 @@
 @code {
     private MudTheme Theme = new MudTheme();
     private Meal meal { get; set; }
+    private List<Rating> ratingList { get; set; } = new();
 
     [Parameter]
     public int Id { get; set; } = 0;
 
     public bool fav { get; set; } = false;
+    public bool rated { get; set; } = true;
+    public int rating { get; set; } = 2;
+    public double avgRating { get; set; } = 4.2;
     public bool dataLoaded { get; set; } = false;
 
     [CascadingParameter] string identity { get; set; }
@@ -137,23 +184,40 @@
 
     async Task AddToFavorite()
     {
-        Favorite obj = new()
+        if (identity != null)
         {
-            AccountId = Guid.Parse(identity),
-            MealId = Convert.ToInt32(Id)
-        };
-        var load = JsonSerializer.Serialize(obj, SerializerOptions);
-        HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
-        var result = await client.PostAsync("https://localhost:44384/api/Favorite/", content).ConfigureAwait(false);
-        if (result.IsSuccessStatusCode) { fav = true; }
+            Favorite obj = new()
+            {
+                AccountId = Guid.Parse(identity),
+                MealId = Convert.ToInt32(Id)
+            };
+            var load = JsonSerializer.Serialize(obj, SerializerOptions);
+            HttpContent content = new StringContent(load, Encoding.UTF8, "application/json");
+            var result = await client.PostAsync("https://localhost:44384/api/Favorite/", content).ConfigureAwait(false);
+            if (result.IsSuccessStatusCode) { fav = true; }
+        }
+    }
+
+    void ChangeRating(int r)
+    {
+        rating = r;
+
+         /* if(rated)
+         *   Api Update Rating
+         * else
+         *   Crate Rating
+    */
     }
 
     async Task RemoveFromFavorite()
     {
-        var result = await api.DeleteFavoriteById(Convert.ToInt32(meal.idMeal), Guid.Parse(identity));
-        if (result)
+        if (identity != null)
         {
-            fav = false;
+            var result = await api.DeleteFavoriteById(Convert.ToInt32(meal.idMeal), Guid.Parse(identity));
+            if (result)
+            {
+                fav = false;
+            }
         }
     }
 
@@ -191,14 +255,27 @@
             if (identity != null)
             {
                 Favorite obj = new()
-                {
-                    AccountId = Guid.Parse(identity),
-                    MealId = Convert.ToInt32(Id)
-                };
+                    {
+                        AccountId = Guid.Parse(identity),
+                        MealId = Convert.ToInt32(Id)
+                    };
                 fav = await api.GetFavoriteStatus(obj);
             }
         }
+        ratingList = new List<Rating>()
+        {
+            new Rating{ index = 1},
+            new Rating{ index = 2},
+            new Rating{ index = 3},
+            new Rating{ index = 4},
+            new Rating{ index = 5}
+        };
         dataLoaded = true;
+    }
+
+    public class Rating
+    {
+        public int index { get; set; }
     }
 
     public class Content
