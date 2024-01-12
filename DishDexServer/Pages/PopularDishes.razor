@@ -12,5 +12,17 @@
 </MudPaper>
 
 @code {
+    private Meal MealList { get; set; }
+
+    [CascadingParameter] string identity { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MealList = new Meal();
+
+        var result = await client.GetFromJsonAsync<Content>("https://www.themealdb.com/api/json/v1/1/random.php");
+        if (result != null)
+            MealList = result.Meals.FirstOrDefault();
+    }
 
 }
